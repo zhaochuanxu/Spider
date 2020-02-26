@@ -1,0 +1,3584 @@
+<!DOCTYPE html>
+
+<html ng-app="myApp">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="renderer" content="webkit">
+
+<title>预申请单提交</title>
+
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap-datepicker.min.css">
+
+<link type="text/css" rel="stylesheet" href="icheck/square/green.css">
+
+<link type="text/css" rel="stylesheet" href="css/prerequest-style.css">
+
+<link type="text/css" rel="stylesheet" href="qtip/jquery.qtip.min.css">
+
+<style>
+
+.btn-info:hover{
+
+	background-color: #0f88eb;
+
+}
+
+p {
+
+    margin: 0 0 0px;
+
+}
+
+.jcrTitle{
+
+	width: 100px;
+
+	margin: 6px
+
+}
+
+.jcrSelect{
+
+	width: 105px;
+
+}
+
+</style>
+
+<script type="text/javascript" src="js/lib/jquery-1.9.1.min.js"></script>
+
+<!--[if lte IE 9]>
+
+<script type="text/javascript" src="js/plugin/placeholders.jquery.min.js"></script>
+
+<![endif]-->
+
+<!--[if lte IE 8]>
+
+<script type="text/javascript" src="js/ieBetter.js"></script>
+
+<script type="text/javascript" src="js/lib/json2.js"></script>
+
+<![endif]-->
+
+<!--<script type="text/javascript" src="js/angular.js"></script>-->
+
+<script type="text/javascript" src="js/angular.min.js"></script>
+
+<!--<script type="text/javascript" src="js/lib/jquery-browser.js"></script>-->
+
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.min.js"></script>
+
+<script type="text/javascript" src="bootstrap/locales/bootstrap-datepicker.zh-CN.min.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="icheck/icheck.min.js"></script>
+
+<script type="text/javascript" src="qtip/jquery.qtip.min.js"></script>
+
+<script type="text/javascript" src="js/plugin/Validform_v5.3.2_min.js"></script>
+
+<script type="text/javascript" src="js/plugin/Validform_Datatype.js"></script>
+
+<script type="text/javascript" src="/easyservice-util/EasyServiceClientFullZ.js"></script>
+
+<script type="text/javascript" src="/easyservice/com.cnebula.common.security.auth.ILoginService?json"></script>
+
+<script type="text/javascript" src="/easyservice/com.cnebula.scas.captcha.ISCASCaptchaService?json"></script>
+
+<script type="text/javascript" src="/easyservice/com.cnebula.scas.web.data.IPreRequestService?json"></script>
+
+<script type="text/javascript" src="/easyservice/com.cnebula.scas.master.data.SystemConfigService?json"></script>
+
+<script type="text/javascript" src="/easyservice/com.cnebula.scas.master.data.SearchTargetService?json"></script>
+
+</head>
+
+<body>
+
+<h3 style="text-align: center;margin-top: 5px;margin-bottom: -10px;">预申请单信息填写</h3>
+
+<div class="container" style="width: 88%;" ng-controller="preRequestCtrl">
+
+    <form method="post" class="prerequest_form form-inline form-horizontal">
+
+        <!-- <div id="headerWrap"></div> -->
+
+        <div class="basic_info" id="basic-info" style="background-color: #ffffff;">
+
+        <ul class="nav nav-tabs">
+
+          <li  class="active"><a href="#in_school" data-toggle="tab" pvalue="0">校内用户</a></li>
+
+          <li><a href="#out_school" data-toggle="tab" pvalue="1">校外用户</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+
+          <div class="tab-pane active" id="in_school">
+
+            <table data-toggle="table" border="0" style="width: 100%;" class="table table-bordered table-condensed table-striped">
+
+              <tbody>
+
+                <tr>
+
+                  <td rowspan="3" style="vertical-align: inherit;">
+
+                    <p class="text-center">委托人（文章作者）信息</p>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>委托人姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+
+                      <input class="input-large span4" type="text" ng-model="preRequestObj.consignorName" value="{{preRequestObj.consignorName}}" placeholder="委托检索文献的作者姓名" vname="in_school" datatype="s2-20" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>校园卡号：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.schoolCardID" value="{{preRequestObj.schoolCardID}}" placeholder="学号/职工号" vname="in_school" datatype="s5-20" />
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td><span class="rta"><span class="need">※</span><span>委托人院系：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-home"></i></span>
+
+                      <input class="span4 departmentName" type="text" ng-model="preRequestObj.departmentName" value="{{preRequestObj.departmentName}}" data-provide="typeahead" placeholder="委托人所在院系" vname="in_school" datatype="s2-20" autocomplete="off" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>申请用途：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-globe"></i></span></div>
+
+                    <select ng-model="preRequestObj.orderPurpose" class="orderPurpose span4" style="margin-left: -3px;" ng-options="op as op for op in orderPurpList">
+
+                    </select>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td colspan="2"><span class="rta"><span class="need">※</span><span>委托人姓名拼音：</span></span>
+
+                    <div class="input-prepend input-append"><span class="add-on"><i class="icon-retweet"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.consignorCheckNameStr" value="{{preRequestObj.consignorCheckNameStr}}" placeholder="右侧查看填写帮助" vname="in_school" datatype="/^[\u4e00-\u9fa5,a-zA-Z,0-9,\s+,;]+$/"/>
+
+                      <span class="add-on helpCName" style="margin-left: -17px; position: absolute; padding-left: 0px; padding-right: 0px;"><i class="icon-question-sign"></i></span>
+
+                      <span style="vertical-align: inherit;" class="Validform_checktip"></span>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td rowspan="3" style="vertical-align: inherit;">
+
+                    <p class="text-center">联系人信息</p>
+
+                  </td>
+
+                  <td colspan="2" style="vertical-align: inherit;"><span class="rta"><span id="isAuthor">联系人是委托人：</span></span>
+
+                    <label class="checkbox" style="vertical-align: bottom;">
+
+                      <input type="checkbox" pname="samePeople">
+
+                    </label>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                	<td><span class="rta"><span class="need">※</span><span>联系人姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+
+                      <input class="input-large span4 sameContactName" type="text" ng-model="preRequestObj.contactName" value="{{preRequestObj.contactName}}" placeholder="真实姓名" vname="in_school" datatype="s2-20" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>联系电话：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-book"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.contactPhone" value="{{preRequestObj.contactPhone}}" placeholder="请填手机号，并保证畅通" vname="in_school" datatype="phone" nullmsg="请填写手机号码！" errormsg="请填写正确的手机号码！"/>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td><span class="rta"><span class="need">※</span><span>电子邮箱：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
+
+                      <input class="span4 contactMail" type="text" ajaxurl="/scasvaliduser" ng-model="preRequestObj.contactMail" value="{{preRequestObj.contactMail}}" placeholder="登录名,用于接收委托进展等邮件" vname="in_school" datatype="e" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>登录密码：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.contactPass" value="{{preRequestObj.contactPass}}" placeholder="6-15位.请用字母 数字 下划线等,不支持特殊符号." vname="in_school" datatype="/^[a-zA-Z0-9\_]{6,15}$/" />
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td style="vertical-align: inherit;">
+
+                    <p class="text-center">团队委托信息</p>
+
+                  </td>
+
+                  <td style="vertical-align: inherit;">
+
+                    <span class="rta"><span>团队委托：</span></span>
+
+                    <label class="checkbox" style="vertical-align: bottom;">
+
+                      <input type="checkbox" pname="teamType">
+
+                    </label>
+
+                  </td>
+
+                  <td><span class="rta"><span>委托团队姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+
+                      <input class="span4 consignorTeamInfo" type="text" ng-model="preRequestObj.consignorTeamInfo" value="{{preRequestObj.consignorTeamInfo}}" vname="in_school" placeholder="真实姓名,每个姓名用(英文;)分隔" datatype="/^[\u4e00-\u9fa5,a-zA-Z,0-9,\s+,;]+$/" ignore="ignore" readonly/>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td style="vertical-align: inherit;">
+
+                    <p class="text-center">报告信息</p>
+
+                  </td>
+
+                  <td>
+
+                    <span class="rta"><span>期望完成时间：</span></span>
+
+                    <div class="input-append date expectFinishTime">
+
+                      <input type="text" class="span3" readonly>
+
+                      <span class="add-on"><i class="icon-th" style="margin-top: 0px;"></i></span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <span class="rta"><span>取报告地址：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-hdd"></i></span></div>
+
+                    <select ng-model="preRequestObj.reportAddr" class="reportAddr span4" style="margin-left: -3px;" ng-options="op as op for op in reportAddrs">
+
+                    </select>
+
+                  </td>
+
+                  </td>
+
+                </tr>
+
+                 <tr class="selfCiteComponent">
+
+                	 <td>
+
+                  		<span  class="rta">自引方式：</span>
+
+                  	</td>
+
+                  	<td>		
+
+						<input type="radio" name="selfRadio_in" value="0" checked/><span class="selfAppend">按全部作者</span>
+
+						<input type="radio" name="selfRadio_in" value="1"  /><span class="selfAppend">按首作者</span>
+
+						<input type="radio" name="selfRadio_in" value="2" /><span class="selfAppend" id="author">按委托人</span>
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+
+
+
+          <div class="tab-pane" id="out_school">
+
+            <table data-toggle="table" border="0" style="width: 100%;" class="table table-bordered table-condensed table-striped">
+
+              <tbody>
+
+                <tr>
+
+                  <td rowspan="2" style="vertical-align: inherit;">
+
+                    <p class="text-center" id="authorTip">委托人（文章作者）信息</p>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span id="authorName">委托人姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+                      <input class="input-large span4" type="text" ng-model="preRequestObj.consignorName" value="{{preRequestObj.consignorName}}" placeholder="委托检索文献的作者姓名" vname="out_school" datatype="s2-20" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>单位名称：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-briefcase"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.organizationName" value="{{preRequestObj.organizationName}}" placeholder="所在单位" vname="out_school" datatype="s2-20" />
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td><span class="rta"><span class="need">※</span><span id="authorPinYin">委托人姓名拼音：</span></span>
+
+                    <div class="input-prepend input-append"><span class="add-on"><i class="icon-retweet"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.consignorCheckNameStr" value="{{preRequestObj.consignorCheckNameStr}}" vname="out_school" placeholder="右侧查看填写帮助" datatype="/^[\u4e00-\u9fa5,a-zA-Z,0-9,\s+,;]+$/"/>
+
+                      <span class="add-on helpCName" style="margin-left: -17px; position: absolute; padding-left: 0px; padding-right: 0px;"><i class="icon-question-sign"></i></span>
+
+                      <span style="vertical-align: inherit;" class="Validform_checktip"></span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <span class="rta"><span class="need">※</span><span>申请用途：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-globe"></i></span></div>
+
+                    <select ng-model="preRequestObj.orderPurpose" class="orderPurpose span4" style="margin-left: -3px;" ng-options="op as op for op in orderPurpList">
+
+                    </select>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td rowspan="3" style="vertical-align: inherit;">
+
+                    <p class="text-center" id="contactPerson">联系人信息</p>
+
+                  </td>
+
+                  <td colspan="2" style="vertical-align: inherit;"><span class="rta"><span id="isAuthor">联系人是委托人：</span></span>
+
+                    <label class="checkbox" style="vertical-align: bottom;">
+
+                      <input type="checkbox" pname="samePeople">
+
+                    </label>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td><span class="rta"><span class="need">※</span><span id="contactName">联系人姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+
+                      <input class="input-large span4 sameContactName" type="text" ng-model="preRequestObj.contactName" value="{{preRequestObj.contactName}}" placeholder="真实姓名" vname="out_school" datatype="s2-20" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>联系电话：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-book"></i></span>
+
+                      <input class="span4 contactMail" type="text" ng-model="preRequestObj.contactPhone" value="{{preRequestObj.contactPhone}}" placeholder="请填手机号，并保证畅通" vname="out_school" datatype="phone" nullmsg="请填写手机号码！" errormsg="请填写正确的手机号码！"/>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td><span class="rta"><span class="need">※</span><span>电子邮箱：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
+
+                      <input class="span4" type="text" ajaxurl="/scasvaliduser" ng-model="preRequestObj.contactMail" value="{{preRequestObj.contactMail}}" placeholder="登录名,用于接收委托进展等邮件" vname="out_school" datatype="e" />
+
+                    </div>
+
+                  </td>
+
+                  <td><span class="rta"><span class="need">※</span><span>登录密码：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span>
+
+                      <input class="span4" type="text" ng-model="preRequestObj.contactPass" value="{{preRequestObj.contactPass}}" placeholder="6-15位.请用字母 数字 下划线等,不支持特殊符号." vname="out_school" datatype="/^[a-zA-Z0-9\_]{6,15}$/" />
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td style="vertical-align: inherit;">
+
+                    <p class="text-center">团队委托信息</p>
+
+                  </td>
+
+                  <td style="vertical-align: inherit;">
+
+                    <span class="rta"><span>团队委托：</span></span>
+
+                    <label class="checkbox" style="vertical-align: bottom;">
+
+                      <input type="checkbox" pname="teamType">
+
+                    </label>
+
+                  </td>
+
+                  <td><span class="rta"><span>委托团队姓名：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+
+                      <input class="span4 consignorTeamInfo" type="text" ng-model="preRequestObj.consignorTeamInfo" value="{{preRequestObj.consignorTeamInfo}}" vname="out_school" placeholder="真实姓名,每个姓名用(英文;)分隔" datatype="/^[\u4e00-\u9fa5,a-zA-Z,0-9,\s+,;]+$/" ignore="ignore" readonly/>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+                <tr>
+
+                  <td style="vertical-align: inherit;">
+
+                    <p class="text-center">报告信息</p>
+
+                  </td>
+
+                  <td>
+
+                    <span class="rta"><span>期望完成时间：</span></span>
+
+                    <div class="input-append date expectFinishTime">
+
+                      <input type="text" class="span3" readonly>
+
+                      <span class="add-on"><i class="icon-th" style="margin-top: 0px;"></i></span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <span class="rta"><span>取报告地址：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-hdd"></i></span></div>
+
+                    <select ng-model="preRequestObj.reportAddr" class="reportAddr span4" style="margin-left: -3px;" ng-options="op as op for op in reportAddrs">
+
+                    </select>
+
+                  </td>
+
+                </tr>
+
+                  <tr>
+
+                	 <td>
+
+                  		<span  class="rta">自引方式：</span>
+
+                  	</td>
+
+                  	<td>		
+
+						<input type="radio" name="selfRadio_out" value="0" checked/><span class="selfAppend">按全部作者</span>
+
+						<input type="radio" name="selfRadio_out" value="1"  /><span class="selfAppend">按首作者</span>
+
+						<input type="radio" name="selfRadio_out" value="2" /><span class="selfAppend">按委托人</span>
+
+                  </td>
+
+                    <td>
+
+                    <span class="rta"><span>报告快递地址：</span></span>
+
+                    <div class="input-prepend"><span class="add-on"><i class="icon-hdd"></i></span></div>
+
+                    	<input class="span4 contactMail" type="text" ng-model="preRequestObj.expressAddress" value="preRequestObj.expressAddress" />
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="db_info" id="db-info" style="background-color: #ffffff;">
+
+        <table data-toggle="table" border="0" style="width: 100%;" class="table table-bordered table-condensed table-striped">
+
+          <thead>
+
+            <tr>
+
+              <th>数据库分类请求</th>
+
+              <th>数据库名称</th>
+
+              <th>收录/引用</th>
+
+              <th>检索选项</th>
+
+              <th>查询年代范围</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+          <tr class="scienceEngineer">
+
+          	 <td propName="scienceEngineer" rowspan="11" style="vertical-align: inherit;"><p class="text-center">理工农医</p></td>
+
+          </tr>
+
+            <tr propName="SCI">
+
+              <td rowspan="2" style="vertical-align: inherit;"><p class="text-center">SCI(科学引文索引)-英文版</p></td>
+
+	              <td style="vertical-align: inherit;text-align: center;" dbname="SCI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SCI">&nbsp;收录</label></td>
+
+	              <td style="vertical-align: inherit;" dbname="SCI">
+
+	              		<i><label class="jcrTitle">JCR输出年：</label></i>
+
+			           		<label class="checkbox jcrSelect" >
+
+			           			<input type="checkbox" dbtype="impact_current" dbname="SCI">
+
+			           			<span class="appendDB">最新年</span>
+
+			           		</label>
+
+			           		<label class="checkbox jcrSelect" >
+
+			           			<input type="checkbox" dbtype="impact_published" dbname="SCI">
+
+			           			<span class="appendDB">发表年</span>
+
+			           		</label>
+
+	              		<br>
+
+		           		<i><label class="jcrTitle">JCR输出选项：</label></i>
+
+		           		<label class="checkbox jcrSelect" >
+
+		           			<input type="checkbox" dbtype="impact_journal" dbname="SCI">
+
+		           			<span class="appendDB">JCR影响因子</span>
+
+		           		</label>
+
+		           		<label class="checkbox jcrSelect" >
+
+		           			<input type="checkbox" dbtype="impact_rank" dbname="SCI">
+
+		           			<span class="appendDB">JCR分区</span>
+
+		           		</label>
+
+		           		<br>
+
+		           		<i class="casJounalClass"><label class="jcrTitle">中科院分区：</label></i>
+
+		           		<label class="checkbox casJounalClass jcrSelect" >
+
+		           			<input type="checkbox" dbtype="z_impact_current" dbname="SCI">
+
+		           			<span class="appendDB ">最新年</span>
+
+		           		</label>
+
+		           		<label class="checkbox casJounalClass jcrSelect" >
+
+		           			<input type="checkbox" dbtype="z_impact_published" dbname="SCI">
+
+		           			<span class="appendDB">发表年</span>
+
+		           		</label>
+
+	              	</td>
+
+	              <td style="vertical-align: inherit;" dbname="SCI">
+
+	                <div class="input-daterange" id="datepicker" dbname="SCI">
+
+	                    <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	                </div>
+
+	              </td>
+
+            </tr>
+
+            <tr propName="SCI-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SCI-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SCI-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SCI-R">
+
+                <div>
+
+                  <label class="radio" >
+
+	                  	<input type="radio" name="optionsRadios1" dbname="SCI-R" value="true" >
+
+	                  	自引和他引
+
+                  </label>
+
+                  <label class="radio" >
+
+	                 	<input type="radio" name="optionsRadios1" dbname="SCI-R" value="false" checked>
+
+	                 	他引
+
+                  </label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="SCI-R">
+
+                <div class="input-daterange" id="datepicker" dbname="SCI-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="EI">
+
+              <td rowspan="1" style="vertical-align: inherit;text-align: center;"><p class="text-center">EI(工程引文索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="EI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="EI">&nbsp;收录</label></td>
+
+              <td dbname="EI"></td>
+
+              <td style="vertical-align: inherit;" dbname="EI">
+
+                <div class="input-daterange" id="datepicker" dbname="EI">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CPCI-S">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">CPCI-S(科学会议录引文索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-S"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CPCI-S">&nbsp;收录</label></td>
+
+              <td dbname="CPCI-S"></td>
+
+              <td style="vertical-align: inherit;" dbname="CPCI-S">
+
+                <div class="input-daterange" id="datepicker" dbname="CPCI-S">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CPCI-S-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-S-R"><label class="checkbox"><input type="checkbox" dbtype="db" dbname="CPCI-S-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-S-R">
+
+                <div>
+
+	                  <label class="radio" >
+
+		                  	<input type="radio" name="optionsRadios2" dbname="CPCI-S-R" value="true" >
+
+		                  	自引和他引
+
+	                  </label>
+
+	                  <label class="radio" >
+
+			                <input type="radio" name="optionsRadios2" dbname="CPCI-S-R" value="false" checked>
+
+			                他引
+
+	                  </label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="CPCI-S-R">
+
+                <div class="input-daterange" id="datepicker" dbname="CPCI-S-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CSCD">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">CSCD(中国科学引文索引)-中文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSCD"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CSCD">&nbsp;收录</label></td>
+
+              <td dbname="CSCD"></td>
+
+              <td style="vertical-align: inherit;" dbname="CSCD">
+
+                <div class="input-daterange" id="datepicker" dbname="CSCD">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CSCD-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSCD-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CSCD-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSCD-R">
+
+                <div>
+
+                  	<label class="radio" >
+
+                  			<input type="radio" name="optionsRadios3" dbname="CSCD-R" value="true" >
+
+                  			自引和他引
+
+                  	</label>
+
+                  	<label class="radio" >
+
+                  			<input type="radio" name="optionsRadios3" dbname="CSCD-R" value="false" checked>
+
+                  			他引
+
+                  	</label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="CSCD-R">
+
+                <div class="input-daterange" id="datepicker" dbname="CSCD-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+             <tr propName="MEDLINE">
+
+	           <td rowspan="1"  style="vertical-align: inherit;text-align: center;">
+
+	             	<p class="text-center">MEDLINE(美国国立医学图书馆)-英文版</p>
+
+	           </td>
+
+	           <td dbname="MEDLINE" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="MEDLINE">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="MEDLINE"></td>
+
+	           <td dbname="MEDLINE">
+
+	               <div class="input-daterange" id="datepicker" dbname="MEDLINE">
+
+	                  	<input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+            
+
+            <tr propName="CA plus收录">
+
+	           <td rowspan="1" style="vertical-align: inherit;">
+
+	             	<p class="text-center" style="vertical-align: inherit;">CA plus收录</p>
+
+	           </td>
+
+	           <td dbname="CA plus收录" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="CA plus收录">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="CA plus收录"></td>
+
+	           <td dbname="CA plus收录">
+
+	               <div class="input-daterange" id="datepicker" dbname="CA plus收录">
+
+	                 	<input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+           <tr propName="Medline收录">
+
+	           <td rowspan="1"  style="vertical-align: inherit;">
+
+	             	<p class="text-center" style="vertical-align: inherit;">Medline收录</p>
+
+	           </td>
+
+	           <td dbname="Medline收录" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="Medline收录">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="Medline收录"></td>
+
+	           <td dbname="Medline收录">
+
+	               <div class="input-daterange" id="datepicker" dbname="Medline收录">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+            <tr class="socialScience">
+
+            	<td propName="socialScience" rowspan="11" style="vertical-align: inherit;"><p class="text-center">社科类</p></td>
+
+            </tr>
+
+            <tr propName="SSCI">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">SSCI(社会科学引文索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SSCI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SSCI">&nbsp;收录</label></td>
+
+              <td style="vertical-align: inherit" dbname="SSCI">
+
+		              <label class="jcrTitle">JCR输出年：</label>
+
+		             	<label class="checkbox inline jcrSelect" >
+
+		             		<input type="checkbox" dbtype="impact_current" dbname="SSCI">
+
+		             		<span class="appendDB">最新年</span>
+
+		             	</label>
+
+		             	<label class="checkbox inline jcrSelect" >
+
+		             		<input type="checkbox" dbtype="impact_published" dbname="SSCI">
+
+		             		<span class="appendDB">发表年</span>
+
+		             	</label>
+
+		             	<br>
+
+		             	<i><label class="jcrTitle">JCR输出项：</label></i>
+
+		             	<label class="checkbox inline jcrSelect" >
+
+		             		<input type="checkbox" dbtype="impact_journal" dbname="SSCI">
+
+		             		<span class="appendDB">JCR影响因子</span>
+
+		             	</label>
+
+		             	<label class="checkbox inline jcrSelect" >
+
+		             		<input type="checkbox" dbtype="impact_rank" dbname="SSCI">
+
+		             		<span class="appendDB">JCR分区</span>
+
+		             	</label>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="SSCI">
+
+                <div class="input-daterange" id="datepicker" dbname="SSCI">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="SSCI-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SSCI-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SSCI-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SSCI-R">
+
+                <div>
+
+                  	<label class="radio" >
+
+                  			<input type="radio" name="optionsRadios4" dbname="SSCI-R" value="true">
+
+                  			自引和他引
+
+                  	</label>
+
+                  	<label class="radio" >
+
+                  			<input type="radio" name="optionsRadios4" dbname="SSCI-R" value="false" checked>
+
+                  			他引
+
+                  	</label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="SSCI-R">
+
+                <div class="input-daterange" id="datepicker" dbname="SSCI-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="AHCI">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">AHCI(人文艺术引文索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="AHCI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="AHCI">&nbsp;收录</label></td>
+
+              <td dbname="AHCI"></td>
+
+              <td style="vertical-align: inherit;" dbname="AHCI">
+
+                <div class="input-daterange" id="datepicker" dbname="AHCI">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr  propName="AHCI-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="AHCI-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="AHCI-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="AHCI-R">
+
+                <div>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios5" dbname="AHCI-R" value="true" >
+
+                  				自引和他引
+
+                  		</label>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios5" dbname="AHCI-R" value="false" checked>
+
+                  				他引
+
+                  		</label>
+
+                </div>
+
+              </td>
+
+               <td style="vertical-align: inherit;" dbname="AHCI-R">
+
+                <div class="input-daterange" id="datepicker" dbname="AHCI-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr  propName="CPCI-SSH">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">CPCI-SSH(社会科学会议录引文索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-SSH"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CPCI-SSH">&nbsp;收录</label></td>
+
+              <td dbname="CPCI-SSH"></td>
+
+              <td style="vertical-align: inherit;" dbname="CPCI-SSH">
+
+                <div class="input-daterange" id="datepicker" dbname="CPCI-SSH">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CPCI-SSH-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-SSH-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CPCI-SSH-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CPCI-SSH-R">
+
+                <div>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios6" dbname="CPCI-SSH-R" value="true" >
+
+                  				自引和他引
+
+                  		</label>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios6" dbname="CPCI-SSH-R" value="false" checked>
+
+                  				他引
+
+                  		</label>
+
+                </div>
+
+              </td>
+
+               <td style="vertical-align: inherit;" dbname="CPCI-SSH-R">
+
+                <div class="input-daterange" id="datepicker" dbname="CPCI-SSH-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CSSCI">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">CSSCI(中国社会科学引文索引)-中文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSSCI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CSSCI">&nbsp;收录</label></td>
+
+              <td dbname="CSSCI"></td>
+
+              <td style="vertical-align: inherit;" dbname="CSSCI">
+
+                <div class="input-daterange" id="datepicker" dbname="CSSCI">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="CSSCI-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSSCI-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="CSSCI-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="CSSCI-R">
+
+                <div>
+
+                  		<label class="radio" >		
+
+                  				<input type="radio" name="optionsRadios7" dbname="CSSCI-R" value="true" >
+
+                  				自引和他引
+
+                  		</label>
+
+                  		<label class="radio" >		
+
+                  				<input type="radio" name="optionsRadios7" dbname="CSSCI-R" value="false" checked>
+
+                  				他引
+
+                  		</label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="CSSCI-R">
+
+                <div class="input-daterange" id="datepicker" dbname="CSSCI-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="INSPEC">
+
+	           <td rowspan="1" style="vertical-align: inherit;text-align: center;">
+
+	             	<p class="text-center">INSPEC(科技文摘数据库)-英文版</p>
+
+	           </td>
+
+	           <td dbname="INSPEC" style="vertical-align: inherit;text-align: center;" dbname="SCOPUS-R">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="INSPEC">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="INSPEC"></td>
+
+	           <td dbname="INSPEC">
+
+	               <div class="input-daterange" id="datepicker" dbname="INSPEC">
+
+	                    <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+           <tr propName="人大复印资料全文数据库-收录">
+
+	           <td rowspan="1" style="vertical-align: inherit;text-align: center;">
+
+	             	<p class="text-center">人大复印资料全文数据库</p>
+
+	           </td>
+
+	           <td dbname="人大复印资料全文数据库-收录" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="人大复印资料全文数据库-收录">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="人大复印资料全文数据库-收录"></td>
+
+	           <td dbname="人大复印资料全文数据库-收录">
+
+	               <div class="input-daterange" id="datepicker" dbname="人大复印资料全文数据库-收录">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+           <tr class="synthesis">
+
+            	<td propName="synthesis" rowspan="17">
+
+            		<p class="text-center" style="vertical-align: inherit;">综合类</p>
+
+            	</td>
+
+            </tr>
+
+           
+
+           <tr propName="WOS-E">
+
+             <td rowspan="2" style="vertical-align: inherit;text-align: center;">
+
+             	<p class="text-center">Web of Science核心合集收录</p>
+
+             </td>
+
+          	<td dbname="WOS-E" style="vertical-align: inherit;text-align: center;">
+
+          		<label class="checkbox" >
+
+          			<input type="checkbox" dbtype="db" dbname="WOS-E">
+
+          			<span class="appendDB">收录</span>
+
+          		</label>
+
+          	</td>
+
+          	<td dbname="WOS-E"></td>
+
+            <td dbname="WOS-E">
+
+               <div class="input-daterange" id="datepicker" dbname="WOS-E">
+
+                   		<input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+               </div>
+
+             </td>
+
+           </tr>
+
+           <tr propName="WOS-E-R">
+
+           	<td dbname="WOS-E-R" style="vertical-align: inherit;text-align: center;">
+
+           		<label class="checkbox" >
+
+	           		<input type="checkbox" dbtype="db" dbname="WOS-E-R">
+
+	           		<span class="appendDB">引用</span>
+
+           		</label>
+
+           	</td>
+
+           	 <td dbname="WOS-E-R" style="vertical-align: inherit;text-align: center;">
+
+               <div class="citeClass">
+
+                 <label class="radio" >
+
+                 	<input type="radio" name="optionsRadios10" dbname="WOS-E-R" value="true" >
+
+                 	<span class="appendDB citetotal">自引和他引</span>
+
+                 </label>
+
+                 <label class="radio" >
+
+                 	<input type="radio" name="optionsRadios10" dbname="WOS-E-R" value="false" checked>
+
+                 	<span class="appendDB">他引</span>
+
+                 </label>
+
+               </div>
+
+             </td>
+
+             <td dbname="WOS-E-R">
+
+               <div class="input-daterange" id="datepicker" dbname="WOS-E-R">
+
+                   		<input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+               </div>
+
+             </td>
+
+           </tr>
+
+            <tr propName="ESCI">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">ESCI(新兴资源索引)-英文版</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="ESCI"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="ESCI">&nbsp;收录</label></td>
+
+              <td dbname="ESCI"></td>
+
+              <td style="vertical-align: inherit;" dbname="ESCI">
+
+                <div class="input-daterange" id="datepicker" dbname="ESCI">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="ESCI-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="ESCI-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="ESCI-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="ESCI-R">
+
+                <div>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios8" dbname="ESCI-R" value="true" >
+
+                  				自引和他引
+
+                  		</label>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios8" dbname="ESCI-R" value="false" checked>
+
+                  				他引
+
+                  		</label>
+
+                </div>
+
+              </td>
+
+               <td style="vertical-align: inherit;" dbname="ESCI-R">
+
+                <div class="input-daterange" id="datepicker" dbname="ESCI-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="SCOPUS">
+
+              <td rowspan="2" style="vertical-align: inherit;text-align: center;"><p class="text-center">SCOPUS(SCOPUS索引)</p></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SCOPUS"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SCOPUS">&nbsp;收录</label></td>
+
+              <td dbname="SCOPUS"></td>
+
+              <td style="vertical-align: inherit;" dbname="SCOPUS">
+
+                <div class="input-daterange" id="datepicker" dbname="SCOPUS">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="SCOPUS-R">
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SCOPUS-R"><label class="checkbox" ><input type="checkbox" dbtype="db" dbname="SCOPUS-R">&nbsp;引用</label></td>
+
+              <td style="vertical-align: inherit;text-align: center;" dbname="SCOPUS-R">
+
+                <div>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios9" dbname="SCOPUS-R" value="true" >
+
+                  				自引和他引
+
+                  		</label>
+
+                  		<label class="radio" >
+
+                  				<input type="radio" name="optionsRadios9" dbname="SCOPUS-R" value="false" checked>
+
+                  				他引
+
+                  		</label>
+
+                </div>
+
+              </td>
+
+              <td style="vertical-align: inherit;" dbname="SCOPUS-R">
+
+                <div class="input-daterange" id="datepicker" dbname="SCOPUS-R">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+                    <span class="add-on"><i class="icon-minus"></i></span>
+
+                    <input type="text" class="input-small" name="end" readonly/>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            <tr propName="万方数据库">
+
+	           <td rowspan="1" style="vertical-align: inherit;">
+
+	             	<p class="text-center">万方数据库</p>
+
+	           </td>
+
+	           <td dbname="万方数据库" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="万方数据库">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="万方数据库"></td>
+
+	           <td dbname="万方数据库">
+
+	               <div class="input-daterange" id="datepicker" dbname="万方数据库">
+
+	               		<input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+           <tr propName="维普中文科技期刊数据库">
+
+	           <td rowspan="1"  style="vertical-align: inherit;">
+
+	             	<p class="text-center">维普中文科技期刊数据库</p>
+
+	           </td>
+
+	           <td dbname="维普中文科技期刊数据库" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="维普中文科技期刊数据库">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="维普中文科技期刊数据库"></td>
+
+	           <td dbname="维普中文科技期刊数据库">
+
+	               <div class="input-daterange" id="datepicker" dbname="维普中文科技期刊数据库">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+           
+
+            <tr propName="中国学术网络出版总库" >
+
+	           <td rowspan="1"   style="vertical-align: inherit;">
+
+	             	<p class="text-center">中国学术网络出版总库</p>
+
+	           </td>
+
+	           <td dbname="中国学术网络出版总库" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="中国学术网络出版总库">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="中国学术网络出版总库"></td>
+
+	           <td dbname="中国学术网络出版总库">
+
+	               <div class="input-daterange" id="datepicker" dbname="中国学术网络出版总库">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+            
+
+           <tr propName="IEEE收录" >
+
+	           <td rowspan="1"  style="vertical-align: inherit;">
+
+	             	<p class="text-center">IEEE收录</p>
+
+	           </td>
+
+	           <td dbname="IEEE收录" style="vertical-align: inherit;text-align: center;">
+
+	           		<label class="checkbox" >
+
+	           			<input type="checkbox" dbtype="db" dbname="IEEE收录">
+
+	           			<span class="appendDB">收录</span>
+
+	           		</label>
+
+	           </td>
+
+	           <td dbname="IEEE收录"></td>
+
+	           <td dbname="IEEE收录">
+
+	               <div class="input-daterange" id="datepicker" dbname="IEEE收录">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+	                    <span class="add-on"><i class="icon-minus"></i></span>
+
+	                    <input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+	             </td>
+
+           </tr>
+
+            
+
+           <tr propName="CNKI收录" >
+
+			   <td rowspan="1"  style="vertical-align: inherit;">
+
+					<p class="text-center">CNKI收录</p>
+
+			   </td>
+
+			   <td dbname="CNKI收录" style="vertical-align: inherit;text-align: center;">
+
+					<label class="checkbox" >
+
+						<input type="checkbox" dbtype="db" dbname="CNKI收录">
+
+						<span class="appendDB">收录</span>
+
+					</label>
+
+			   </td>
+
+			   <td dbname="CNKI收录"></td>
+
+			   <td dbname="CNKI收录">
+
+				   <div class="input-daterange" id="datepicker" dbname="CNKI收录">
+
+					   <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+				   </div>
+
+				 </td>
+
+			</tr>
+
+			
+
+			<tr propName="专利法律状态" >
+
+			   <td rowspan="1"  style="vertical-align: inherit;">
+
+					<p class="text-center">专利法律状态</p>
+
+			   </td>
+
+			   <td dbname="专利法律状态" style="vertical-align: inherit;text-align: center;">
+
+					<label class="checkbox" >
+
+						<input type="checkbox" dbtype="db" dbname="专利法律状态">
+
+						<span class="appendDB">收录</span>
+
+					</label>
+
+			   </td>
+
+			   <td dbname="专利法律状态"></td>
+
+			   <td dbname="专利法律状态">
+
+				   <div class="input-daterange" id="datepicker" dbname="专利法律状态">
+
+					   <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+				   </div>
+
+				 </td>
+
+			</tr>   
+
+			
+
+			
+
+			<tr propName="专利法律状态证明" >
+
+			   <td rowspan="1" style="vertical-align: inherit;">
+
+					<p class="text-center">专利法律状态证明</p>
+
+			   </td>
+
+			   <td dbname="专利法律状态证明" style="vertical-align: inherit;text-align: center;">
+
+					<label class="checkbox" >
+
+						<input type="checkbox" dbtype="db" dbname="专利法律状态证明">
+
+						<span class="appendDB">收录</span>
+
+					</label>
+
+			   </td>
+
+			   <td dbname="专利法律状态证明"></td>
+
+			   <td dbname="专利法律状态证明">
+
+				   <div class="input-daterange" id="datepicker" dbname="专利法律状态证明">
+
+	                   <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+	               </div>
+
+				 </td>
+
+				 </td>
+
+			</tr> 
+
+			
+
+			<tr  propName="CNKI引用">
+
+				<td rowspan="1" style="vertical-align: inherit;">
+
+					<p class="text-center">CNKI引用</p>
+
+			   </td>
+
+           	<td dbname="CNKI引用" style="vertical-align: inherit;text-align: center;">
+
+           		<label class="checkbox" >
+
+           			<input type="checkbox" dbtype="db" dbname="CNKI引用">
+
+           			<span class="appendDB">引用</span>
+
+           		</label>
+
+           	</td>
+
+           	 <td dbname="CNKI引用" style="vertical-align: inherit;text-align: center;">
+
+               <div  class="citeClass">
+
+                 <label class="radio" >
+
+                 	<input type="radio" name="optionsRadios9" dbname="CNKI引用" value="true" >
+
+                 	<span class="appendDB citetotal">自引和他引</span>
+
+                 </label>
+
+                 <label class="radio" >
+
+                 	<input type="radio" name="optionsRadios9" dbname="CNKI引用" value="false" checked>
+
+                 	<span class="appendDB">他引</span>
+
+                 </label>
+
+               </div>
+
+             </td>
+
+             <td dbname="CNKI引用">
+
+               <div class="input-daterange" id="datepicker" dbname="CNKI引用">
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+               </div>
+
+             </td>
+
+           </tr>
+
+			
+
+			<tr  propName="ESI收录">
+
+			<td rowspan="1" style="vertical-align: inherit;">
+
+					<p class="text-center">ESI收录</p>
+
+			 </td>
+
+           	<td dbname="ESI收录" style="vertical-align: inherit;text-align: center;">
+
+           		<label class="checkbox" >
+
+           			<input type="checkbox" dbtype="db" dbname="ESI收录">
+
+           			<span class="appendDB">收录</span>
+
+           		</label>
+
+           	</td>
+
+           	 <td dbname="ESI收录" style="vertical-align: inherit;text-align: center;">
+
+           		<label class="checkbox" >
+
+           			<input type="checkbox" dbtype="cite_article" dbname="ESI收录">
+
+           			<span class="appendDB">高被引论文</span>
+
+           		</label>
+
+           		<label class="checkbox jcrSelect" >
+
+           			<input type="checkbox" dbtype="hot_article" dbname="ESI收录">
+
+           			<span class="appendDB">热点论文</span>
+
+           		</label>
+
+           	</td>
+
+           	<td dbname="ESI收录">
+
+               <div class="input-daterange" id="datepicker" dbname="ESI收录">              
+
+                    <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+               </div>
+
+             </td>
+
+           </tr>
+
+			
+
+			<tr propName="其他数据库" >
+
+			   <td rowspan="1"  style="vertical-align: inherit;">
+
+					<p class="text-center">
+
+			   			<input class="otherDb" type="text"  value="其他数据库"/>
+
+			   			<button class="inputDbNameBtn">输入数据库名称</button>
+
+			   		</p>
+
+			   </td>
+
+			   <td dbname="其他数据库" style="vertical-align: inherit;text-align: center;">
+
+					<label class="checkbox" >
+
+						<input type="checkbox" dbtype="db" dbname="其他数据库">
+
+						<span class="appendDB">收录</span>
+
+					</label>
+
+			   </td>
+
+			   <td dbname="其他数据库"></td>
+
+			   <td dbname="其他数据库">
+
+				   <div class="input-daterange" id="datepicker" dbname="其他数据库">
+
+					   <input type="text" class="input-small" name="start" readonly/>
+
+						<span class="add-on"><i class="icon-minus"></i></span>
+
+						<input type="text" class="input-small" name="end" readonly/>
+
+				   </div>
+
+				 </td>
+
+			</tr>       
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="article_info" id="article-info" style="background-color: #ffffff;">
+
+        <div style="display: inline-block;"><span>中文文献数量：</span><input class="input-large span4" type="number" placeholder="" ng-model="preRequestObj.cnArticleSize" datatype="n" value="0" min="0" max="10000" ignore="ignore"/></div>
+
+        <label style="width: 100px;"></label>
+
+        <div style="display: inline-block;"><span>外文文献数量：</span><input class="input-large span4" type="number" placeholder="" ng-model="preRequestObj.enArticleSize" datatype="n" value="0" min="0" max="10000" ignore="ignore"/></div>
+
+      </div>
+
+      <div class="other_info" id="other-info" style="background-color: #ffffff;">
+
+        <textarea rows="1" style="border: 1px solid #ccc; background: white; width: 99%;" ng-model="preRequestObj.otherInfo"></textarea>
+
+      </div>
+
+      <div style="margin-top: 10px;">
+
+          <input type="text" value="验证码" id="captcha" datatype="captcha" nullmsg="验证码不能为空" errormsg="验证码不正确,请重新填写!" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '验证码';}" style="width: 20%; height: 22px; font-size: 20px;" />
+
+          <img class="easycaptcha" alt="" src="/scascaptcha" style="width: 150px; height: 32px; position: relative; margin-top: 0px;"> <a class="change_captcha" href="javascript:void(0);">换一张</a>
+
+      </div>
+
+      <div class="text-center">
+
+          <input type="submit" class="btn btn-info" value="提　交" style="background-image: linear-gradient(to bottom,#0f88eb,#0f88eb);" />
+
+      </div>
+
+      <div class="footer" id="footer"></div>
+
+    </form>
+
+</div>
+
+  <script type="text/javascript">
+
+var app = angular.module('myApp', []);
+
+
+
+app.controller('preRequestCtrl', function($scope) {  
+
+	preRequestCtrl($scope);
+
+}); 
+
+  
+
+//控制器  
+
+  function preRequestCtrl($scope) {
+
+	  var loginService = EasyServiceClient.getRemoteProxy("/easyservice/com.cnebula.common.security.auth.ILoginService");
+
+	  var dataroot = "/conf/" + loginService.getUser().depext_6 + "/scas.json";
+
+      $.ajax({
+
+        type: "get",
+
+        async: false,
+
+        url: dataroot,
+
+        data: {},
+
+        success: function(data) {
+
+          $('h1').html(data.login_title_name);
+
+          if(data.preorder_status == 0){
+
+        	  window.location="/login.html";
+
+          }
+
+        },
+
+        dataType: "json"
+
+      });
+
+	  
+
+    var dbcache = {
+
+      //[数据库，年代范围，是否自引，影响因子最新年，影响因子发表年]
+
+    		'SCI': ['SCI', '', '', 'false', 'false','false', 'false','false','false'],
+
+		    'SCI-R': ['SCI-R', '', 'flase', '', ''],
+
+		    'EI': ['EI', '', '', '', ''],
+
+		    'CPCI-S': ['CPCI-S', '', '', '', ''],
+
+		    'CPCI-S-R': ['CPCI-S-R', '', 'flase', '', ''],
+
+		    'CSCD': ['CSCD', '', '', '', ''],
+
+		    'CSCD-R': ['CSCD-R', '', 'flase', '', ''],
+
+		    'SSCI': ['SSCI', '', '', 'false', 'false','false', 'false'],
+
+		    'SSCI-R': ['SSCI-R', '', 'flase', '', ''],
+
+		    'AHCI': ['AHCI', '', '', '', ''],
+
+		    'AHCI-R': ['AHCI-R', '', 'flase', '', ''],
+
+		    'CPCI-SSH': ['CPCI-SSH', '', '', '', ''],
+
+		    'CPCI-SSH-R': ['CPCI-SSH-R', '', 'flase', '', ''],
+
+		    'CSSCI': ['CSSCI', '', '', '', ''],
+
+		    'CSSCI-R': ['CSSCI-R', '', 'flase', '', ''],
+
+		    'ESCI': ['ESCI', '', '', '', ''],
+
+		    'ESCI-R': ['ESCI-R', '', 'flase', '', ''],
+
+		    'SCOPUS': ['SCOPUS', '', '', '', ''],
+
+		    'SCOPUS-R': ['SCOPUS-R', '', 'flase', '', ''],
+
+		    '万方数据库': ['万方数据库', '', '', '', ''],
+
+		    '维普中文科技期刊数据库': ['维普中文科技期刊数据库', '', '', '', ''],
+
+		    '中国学术网络出版总库': ['中国学术网络出版总库', '', '', '', ''],
+
+		    'MEDLINE': ['MEDLINE', '', '', '', ''],
+
+		    'INSPEC': ['INSPEC', '', '', '', ''],
+
+			'WOS-E': ['WOS-E', "", "", "", ""],
+
+		    'WOS-E-R': ['WOS-E-R', "", "flase", "", ""],
+
+		    'IEEE收录':['IEEE收录', '', '', '', ''],
+
+		    'CNKI收录':['CNKI收录', '', '', '', ''],
+
+		    '专利法律状态':['专利法律状态', '', '', '', ''],
+
+		    '其他数据库':['其他数据库', '', '', '', '']
+
+    };
+
+    var synthesisTargetObj = {
+
+	    	"WOS-E": "WOS-E",
+
+	    	"WOS-E-R": "WOS-E-R",
+
+		     "万方数据库": "万方数据库",
+
+		     "维普中文科技期刊数据库": "维普中文科技期刊数据库",
+
+		     "中国学术网络出版总库": "中国学术网络出版总库",
+
+		   	 "IEEE收录": "IEEE收录",
+
+		   	 "CNKI收录": "CNKI收录",
+
+		   	 "专利法律状态": "专利法律状态",
+
+		   	 "其他数据库": "其他数据库"
+
+	    };
+
+    var scienceTargetObj = {
+
+   		"SCI": "SCI",
+
+    	"SCI-R": "SCI-R",
+
+    	"EI": "EI",
+
+    	"CSCD": "CSCD",
+
+    	"CSCD-R": "CSCD-R",
+
+    	"CPCI-S": "CPCI-S",
+
+    	"CPCI-S-R": "CPCI-S-R",
+
+    	"MEDLINE": "MEDLINE"
+
+    };
+
+    var societyObj = {
+
+   			'SSCI':  'SSCI',
+
+	       'SSCI-R':  'SSCI-R',
+
+	       'AHCI': 'AHCI',
+
+	       'AHCI-R': 'AHCI-R',
+
+	       'CPCI-SSH': 'CPCI-SSH',
+
+	       'CPCI-SSH-R': 'CPCI-SSH-R',
+
+	       'CSSCI': ['CSSCI', '', '', '', ''],
+
+	       'CSSCI-R': 'CSSCI-R',
+
+	       'ESCI': 'ESCI',
+
+	       'ESCI-R': 'ESCI-R',
+
+	       "SCOPUS": "SCOPUS",
+
+	       "SCOPUS-R": "SCOPUS-R",
+
+	       "INSPEC": "INSPEC"
+
+    };
+
+    var captchService = EasyServiceClient.getRemoteProxy("/easyservice/com.cnebula.scas.captcha.ISCASCaptchaService"),
+
+    	targetService = EasyServiceClient.getRemoteProxy("/easyservice/com.cnebula.scas.master.data.SearchTargetService"),	
+
+      	systemConfigService = EasyServiceClient.getRemoteProxy("/easyservice/com.cnebula.scas.master.data.SystemConfigService"),
+
+      	preRequestService = EasyServiceClient.getRemoteProxy("/easyservice/com.cnebula.scas.web.data.IPreRequestService");
+
+
+
+    var calisCode = loginService.getUser().depext_6 ;
+
+    
+
+    var preRequestObj = {
+
+      _t_: "com.cnebula.scas.web.data.PreRequest",
+
+      _i_: 0,
+
+      status: 0,
+
+      expectFinishTime: 0,
+
+      schoolUser: true,
+
+      samePeople: false,
+
+      contactMail: "",
+
+      attachmenId: "",
+
+      attachmenName: "",
+
+      orderPurpose: "", // 申请用途属性
+
+      consignorCheckNameStr: "",
+
+      consignorCheckNameList: {
+
+        _t_: "java.util.ArrayList",
+
+        _i_: 1,
+
+        values: []
+
+      },
+
+      consignorName: "",
+
+      consignorTeamInfo: "",
+
+      teamType: 0,
+
+      schoolCardID: "",
+
+      contactPhone: "",
+
+      enArticleSize: 0,
+
+      cnArticleSize: 0,
+
+      organizationName: "",
+
+      contactName: "",
+
+      contactId: "",
+
+      searchTarget: {
+
+        _t_: "java.util.ArrayList",
+
+        _i_: 2,
+
+        values: []
+
+      },
+
+      departmentName: "",
+
+      otherInfo: "",
+
+      reportAddr: "",
+
+      contactPass: "",
+
+      hasJournalImpactFactor: false,
+
+      selfCiteJudgeType: 0
+
+    };
+
+    var allTargets = new java.util.ArrayList(),
+
+    	allTargetsObj = {},
+
+    	targetCount = 0,
+
+    	scienceCount = 0,
+
+    	societyCount = 0;
+
+    	synthesisCount = 0; 
+
+    // 从后台接口获取配置数据库
+
+	try {
+
+		 allTargets = targetService.getSearchTarget();		  
+
+	  } catch (ex) {
+
+		alert("首次委托单,获取数据库配置异常");
+
+		return;
+
+	 }
+
+	 for (var i = 0, l = allTargets.size(); i < l; i++) {
+
+		 var targetTransObj = allTargets.get(i),
+
+		 	targetTransName = targetTransObj.name,
+
+		 	targetArray = [];
+
+		 targetArray.push(targetTransName);
+
+		 if (dbcache[targetTransName]) {
+
+			 if (!targetTransObj.show || !targetTransObj.buy) {
+
+				 if (targetTransName.indexOf("-R") > -1) {
+
+					 var transName = targetTransName.substr(0, targetTransName.lastIndexOf("-"));
+
+					 if (allTargetsObj[transName]) {
+
+						 allTargetsObj[transName].push(targetTransName);
+
+					 } else {
+
+						 allTargetsObj[transName] = targetArray;
+
+					 }
+
+				 } else {
+
+					 if (allTargetsObj[targetTransName]) {
+
+						 allTargetsObj[targetTransName].push(targetTransName);
+
+					 } else {
+
+						 allTargetsObj[targetTransName] = targetArray;
+
+					 }
+
+				 }
+
+				 targetCount++;
+
+			 }
+
+		 }
+
+	 }
+
+	 if (targetCount < allTargets.size()) {
+
+		 for (var prop in allTargetsObj) {
+
+			 var targetOne = allTargetsObj[prop],
+
+			 	targetLength = 0;
+
+			 targetLength = targetOne.length
+
+			 if (targetLength == 1) {
+
+				 if (prop == "EI" || prop == "MEDLINE" || prop == "CA plus收录" || prop == "Medline收录") {
+
+					 $("tr[propName="+prop+"]").remove();
+
+					 var scienceSpan = $("td[propName=scienceEngineer]").attr("rowspan");
+
+					 $("td[propName=scienceEngineer]").attr("rowspan", parseInt(scienceSpan) - 1);
+
+				 }else if(prop == "INSPEC" || prop =="人大复印资料全文数据库"){
+
+					 $("tr[propName="+prop+"]").remove();
+
+					 var scienceSpan = $("td[propName=socialScience]").attr("rowspan");
+
+					 $("td[propName=socialScience]").attr("rowspan", parseInt(scienceSpan) - 1);
+
+				 }else if(prop == "万方数据库" || prop == "维普中文科技期刊数据库" 
+
+					 || prop == "中国学术网络出版总库" || prop == "IEEE收录" ||
+
+					 prop == "CNKI收录" || prop == "专利法律状态" || prop == "其他数据库"
+
+						 || prop == "专利法律状态证明" || prop == "CNKI引用" || prop == "ESI收录" ) {
+
+					 $("tr[propName="+prop+"]").remove();
+
+					 var synthesisSpan = $("td[propName=synthesis]").attr("rowspan");
+
+					 $("td[propName=synthesis]").attr("rowspan", parseInt(synthesisSpan) - 1);
+
+				 } else {
+
+					 if (targetOne[0].indexOf("-R") > -1) {
+
+						  prop = prop + "-R";
+
+					 }
+
+					 $("td[dbName="+prop+"]").each(function(idx, ele) {
+
+						 $(ele).remove();
+
+					 });
+
+				 }
+
+				 if (scienceTargetObj[prop]) {
+
+						scienceCount = scienceCount + 1;
+
+				  }
+
+				 if (societyObj[prop]) {
+
+				    	societyCount = societyCount + 1;
+
+				  }
+
+				  if (synthesisTargetObj[prop]) {
+
+					  synthesisCount = synthesisCount + 1;
+
+				  }
+
+				 
+
+			 } else if (targetLength == 2) {
+
+				 $("tr[propName="+prop+"]").remove();
+
+				 $("tr[propName="+prop+"-R]").remove();
+
+				 if (scienceTargetObj[prop]) {
+
+					 var scienceSpan = $("td[propName=scienceEngineer]").attr("rowspan");
+
+					 $("td[propName=scienceEngineer]").attr("rowspan", parseInt(scienceSpan) - 2);
+
+						scienceCount = scienceCount + 2;
+
+				  }
+
+				 if (societyObj[prop]) {
+
+					 var societySpan = $("td[propName=socialScience]").attr("rowspan");
+
+					 $("td[propName=socialScience]").attr("rowspan", parseInt(societySpan) - 2);
+
+				    	societyCount = societyCount + 2;
+
+				  }
+
+				 if (synthesisTargetObj[prop]) {
+
+					 var synthesisSpan = $("td[propName=synthesis]").attr("rowspan");
+
+					 $("td[propName=synthesis]").attr("rowspan", parseInt(synthesisSpan) - 2);
+
+					 synthesisCount = synthesisCount + 2;
+
+				  }
+
+			 }
+
+		 }
+
+	 } else {
+
+		 $("div.db_info").hide();
+
+	 }
+
+	 if (scienceCount == 8) {
+
+		 $("tr.scienceEngineer").remove();
+
+	 }
+
+	 if (societyCount == 13) {
+
+		 $("tr.socialScience").remove();
+
+	 }
+
+	 if (synthesisCount == 5) {
+
+		 $("tr.synthesis").remove();
+
+	 }
+
+	 
+
+    $('#basic-info .nav-tabs a').click(function(e) {
+
+      e.preventDefault();
+
+      var pvalue = $(this).attr('pvalue');
+
+      if(pvalue === '0'){
+
+   		//南昌大学 - 中科院分区检索，只允许校内用户委托。
+
+   		if (calisCode == 236010) {
+
+   			$(".casJounalClass").show();
+
+   		}
+
+        preRequestObj.schoolUser = true;
+
+        validform.unignore('#basic-info input[vname="in_school"]');
+
+        validform.ignore('#basic-info input[vname="out_school"]');
+
+        validform.unignore('#in_school .contactMail');
+
+        validform.ignore('#out_school .contactMail');
+
+      }
+
+      if(pvalue === '1'){
+
+    	//南昌大学 - 中科院分区检索，只允许校内用户委托。
+
+  		if (calisCode == 236010) {
+
+  			$(".casJounalClass").hide();
+
+  		}
+
+        preRequestObj.schoolUser = false;
+
+        validform.ignore('#basic-info input[vname="in_school"]');
+
+        validform.unignore('#basic-info input[vname="out_school"]');
+
+        validform.ignore('#in_school .contactMail');
+
+        validform.unignore('#out_school .contactMail');
+
+      }
+
+      
+
+      if(preRequestObj.teamType === 0) {
+
+        $('#basic-info .consignorTeamInfo').attr('ignore', 'ignore');
+
+      }
+
+      validform.check(true);
+
+    });
+
+    if(preRequestObj.teamType === 0) {
+
+      $('#basic-info .consignorTeamInfo').attr('ignore', 'ignore');
+
+    }
+
+    
+
+    $scope.preRequestObj = preRequestObj;
+
+    // 存放申请用途信息
+
+    var orderPurpList = [],
+
+      orgNames = [],
+
+      reportAddrs = [];
+
+
+
+    //加载申请用途等信息
+
+    try {
+
+      orderPurpList = systemConfigService.getConfigs("学校自定义参数", "orderPurpose").values;
+
+      orgNames = systemConfigService.getConfigs("学校自定义参数", "orgNames").values;
+
+      reportAddrs = systemConfigService.getConfigs("学校自定义参数", "reportAddrs").values;
+
+    } catch (ex) {
+
+      alert("获取服务参数信息失败，不能正常显示!");
+
+      return;
+
+    }
+
+    $scope.orderPurpList = orderPurpList;
+
+    if (orderPurpList.length > 0) {
+
+      preRequestObj.orderPurpose = orderPurpList[0];
+
+    }
+
+    $scope.reportAddrs = reportAddrs;
+
+    if (reportAddrs.length > 0) {
+
+      preRequestObj.reportAddr = reportAddrs[0];
+
+    }
+
+    
+
+    $('.departmentName').typeahead({
+
+      source: function(query, process) {
+
+        return orgNames;
+
+      }
+
+    });
+
+	
+
+    // 帮助信息？
+
+	$('.helpCName').qtip({
+
+		content:{
+
+			text: function(event, api) {
+
+				return '全拼,每个字用空格分隔.例如张志晨为zhang zhi chen 可以多值,用(英文;)分割.';
+
+			},
+
+			title: {
+
+				text: '填写帮助',
+
+				button: false
+
+			}
+
+		}
+
+		,hide: {
+
+            fixed: true,
+
+            delay: 100
+
+        }
+
+	});
+
+	
+
+    var finishTime = new Date();
+
+    finishTime.setDate(finishTime.getDate() + 3);
+
+    preRequestObj.expectFinishTime = finishTime.getTime();
+
+    var finishTimePicker = $('.expectFinishTime').datepicker({
+
+      format: 'yyyy-mm-dd',
+
+      language: 'zh-CN',
+
+      bootcssVer: 2,
+
+      autoclose: true,
+
+      startDate: new Date(),
+
+      todayHighlight: true,
+
+      todayBtn: "linked"
+
+    }).on('changeDate', function(ev) {
+
+      preRequestObj.expectFinishTime = ev.date.getTime();
+
+    });
+
+    finishTimePicker.datepicker('update', finishTime);
+
+
+
+    $('#db-info .input-daterange').datepicker({
+
+      format: "yyyy",
+
+      minViewMode: 2,
+
+      language: "zh-CN",
+
+      autoclose: true,
+
+      endDate: "new Date()",
+
+      todayHighlight: true,
+
+      clearBtn: true,
+
+    }).on('changeDate', function(ev) {
+
+      console.log(ev);
+
+      var dbname = $(ev.currentTarget).attr('dbname');
+
+      var inputName = $(ev.target).attr('name');
+
+      var inputValue = $(ev.target).val();
+
+      var oldValue = dbcache[dbname][1];
+
+      if(inputName === 'start'){
+
+        if(oldValue.indexOf('-') >= 0){
+
+          var oldValues = oldValue.split('-');
+
+          dbcache[dbname][1] = inputValue + '-' + oldValues[1];
+
+        } else {
+
+          dbcache[dbname][1] = inputValue + '-';
+
+        }
+
+      }
+
+      if(inputName === 'end'){
+
+        if(oldValue.indexOf('-') >= 0){
+
+          var oldValues = oldValue.split('-');
+
+          dbcache[dbname][1] = oldValues[0] + '-' + inputValue;
+
+        } else {
+
+          dbcache[dbname][1] = '-' + inputValue;
+
+        }
+
+      }
+
+      
+
+      if(dbcache[dbname][1] === '-') {
+
+        dbcache[dbname][1] = '';
+
+      }
+
+    }).on('clearDate', function(ev) {
+
+    }).on('changeYear', function(ev) {
+
+    });
+
+
+
+    $("#basic-info input:checkbox,#basic-info input:radio,#db-info input:checkbox,#db-info input:radio").iCheck({
+
+      checkboxClass: 'icheckbox_square-green',
+
+      radioClass: 'iradio_square-green',
+
+      increaseArea: '20%' // optional
+
+    });
+
+    
+
+    $('.basic_info input:radio[name=selfRadio_in]').on('ifChecked', function(event){
+
+      var value = $(this).val();
+
+      preRequestObj.selfCiteJudgeType = parseInt(value);
+
+      $('.basic_info input:radio[name=selfRadio_out][value='+value+']').iCheck('check');
+
+    });
+
+    $('.basic_info input:radio[name=selfRadio_out]').on('ifChecked', function(event){
+
+      var value = $(this).val();
+
+      preRequestObj.selfCiteJudgeType = parseInt(value);
+
+      $('.basic_info input:radio[name=selfRadio_in][value='+value+']').iCheck('check');
+
+    });
+
+    
+
+    $('#db-info input:checkbox[dbtype=impact_current]').on('ifChecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      dbcache[dbname][3] = 'true';
+
+    });
+
+    $('#db-info input:checkbox[dbtype=impact_published]').on('ifChecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      dbcache[dbname][4] = 'true';
+
+    });
+
+    
+
+    $('#db-info input:checkbox[dbtype=impact_journal]').on('ifChecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][5] = 'true';
+
+      });
+
+      $('#db-info input:checkbox[dbtype=impact_rank]').on('ifChecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][6] = 'true';
+
+      });
+
+    
+
+    $('#db-info input:checkbox[dbtype=z_impact_current]').on('ifChecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][7] = 'true';
+
+    });
+
+    $('#db-info input:checkbox[dbtype=z_impact_published]').on('ifChecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][8] = 'true';
+
+    });
+
+    
+
+    $('#db-info input:checkbox[dbtype=impact_current]').on('ifUnchecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      dbcache[dbname][3] = 'false';
+
+    });
+
+    $('#db-info input:checkbox[dbtype=impact_published]').on('ifUnchecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      dbcache[dbname][4] = 'false';
+
+    });
+
+    
+
+    $('#db-info input:checkbox[dbtype=impact_journal]').on('ifUnchecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][5] = 'false';
+
+      });
+
+      $('#db-info input:checkbox[dbtype=impact_rank]').on('ifUnchecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][6] = 'false';
+
+      });
+
+    
+
+    $('#db-info input:checkbox[dbtype=z_impact_current]').on('ifUnchecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][7] = 'false';
+
+    });
+
+    $('#db-info input:checkbox[dbtype=z_impact_published]').on('ifUnchecked', function(event){
+
+        var dbname = $(this).attr('dbname');
+
+        dbcache[dbname][8] = 'false';
+
+    });
+
+    
+
+    $('#db-info input:radio').on('ifChecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      var value = $(this).val();
+
+      dbcache[dbname][2] = value;
+
+    });
+
+    
+
+
+
+    // ESI-高被引论文 选中事件
+
+	$('#db-info input:checkbox[dbtype=cite_article]').on('ifChecked', function(event){
+
+		var dbname = $(this).attr('dbname');
+
+		dbcache[dbname][3] = 'true';
+
+	});
+
+	 
+
+	// ESI-热点论文 取消选中事件
+
+    $('#db-info input:checkbox[dbtype=cite_article]').on('ifUnchecked', function(event){
+
+	   var dbname = $(this).attr('dbname');
+
+	   	dbcache[dbname][3] = 'true';
+
+    });
+
+    
+
+    // ESI-热点论文 选中事件
+
+	$('#db-info input:checkbox[dbtype=hot_article]').on('ifChecked', function(event){
+
+		var dbname = $(this).attr('dbname');
+
+		dbcache[dbname][4] = 'true';
+
+	});
+
+	 
+
+	// ESI-热点论文 取消选中事件
+
+    $('#db-info input:checkbox[dbtype=hot_article]').on('ifUnchecked', function(event){
+
+	   var dbname = $(this).attr('dbname');
+
+	   	dbcache[dbname][4] = 'true';
+
+    });
+
+    
+
+    
+
+    //其他数据库点击事件
+
+    $(".inputDbNameBtn").bind("click", function(e) {
+
+    	var dbName = $(".otherDb").val();
+
+    	if("其他数据库" == dbName){
+
+    		$(".otherDb").val("");
+
+    		$(".otherDb").focus();
+
+    	}
+
+	});
+
+    $(".otherDb").bind("mouseout", function(e) {
+
+    	var dbName = $(".otherDb").val();
+
+    	if("" == dbName){
+
+    		alert("其他数据库的值不能为空");
+
+    	}
+
+	});
+
+    
+
+    var selectDbs = [];
+
+    $('#db-info input:checkbox[dbtype=db]').on('ifChecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      selectDbs.push(dbname);
+
+    });
+
+    $('#db-info input:checkbox[dbtype=db]').on('ifUnchecked', function(event){
+
+      var dbname = $(this).attr('dbname');
+
+      var index = $.inArray(dbname, selectDbs);
+
+      if(index >= 0) {
+
+        selectDbs.splice(index, 1);
+
+      }
+
+    });
+
+    
+
+    //团队委托处理
+
+    $("#basic-info input:checkbox[pname=teamType]").on('ifChecked', function(event){
+
+      preRequestObj.teamType = 1;
+
+      $('#basic-info input:checkbox[pname=teamType]').iCheck('check');
+
+      $('#basic-info .consignorTeamInfo').removeAttr('readonly');
+
+      $('#basic-info .consignorTeamInfo').removeAttr('ignore');
+
+    });
+
+    $("#basic-info input:checkbox[pname=teamType]").on('ifUnchecked', function(event){
+
+      preRequestObj.teamType = 0;
+
+      $scope.preRequestObj.consignorTeamInfo = '';
+
+      $scope.$digest();
+
+      $('#basic-info input:checkbox[pname=teamType]').iCheck('uncheck');
+
+      $('#basic-info .consignorTeamInfo').attr('readonly', true);
+
+      $('#basic-info .consignorTeamInfo').attr('ignore', 'ignore');
+
+    });
+
+    //委托人是联系人
+
+    $("#basic-info input:checkbox[pname=samePeople]").on('ifChecked', function(event){
+
+      preRequestObj.samePeople = true;
+
+      preRequestObj.contactName = '';
+
+      $('#basic-info .sameContactName').attr('readonly', true);
+
+      $('#basic-info .sameContactName').attr('ignore', 'ignore');
+
+      $scope.$digest();
+
+    });
+
+    $("#basic-info input:checkbox[pname=samePeople]").on('ifUnchecked', function(event){
+
+      preRequestObj.samePeople = false;
+
+      $('#basic-info .sameContactName').removeAttr('readonly');
+
+      $('#basic-info .sameContactName').removeAttr('ignore');
+
+    });
+
+
+
+    $('.change_captcha').bind("click", function() {
+
+      $('.easycaptcha').attr('src', "/scascaptcha?t=" + new Date().getTime());
+
+    });
+
+
+
+    $.Tipmsg.r = '';
+
+    var validform = $(".prerequest_form").Validform({
+
+      tiptype: function(msg,o,cssctl){
+
+        //msg：提示信息;
+
+        //o:{obj:*,type:*,curform:*}, obj指向的是当前验证的表单元素（或表单对象），type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态, curform为当前form对象;
+
+        //cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）;
+
+
+
+        if(!o.obj.is("form")){//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;
+
+          var objtip = o.obj.parent().find(".Validform_checktip");
+
+          if(objtip.length == 0) {
+
+            o.obj.after('<span style="vertical-align: inherit;" class="Validform_checktip"></span>');
+
+            objtip = o.obj.parent().find(".Validform_checktip");
+
+          }
+
+          switch(o.type){
+
+            case 1:
+
+                objtip.removeClass("Validform_right Validform_wrong").addClass("Validform_checktip Validform_loading");//checking;
+
+                break;
+
+            case 2:
+
+                objtip.removeClass("Validform_wrong Validform_loading").addClass("Validform_checktip Validform_right");//passed;
+
+                break;
+
+            case 4:
+
+                objtip.removeClass("Validform_right Validform_wrong Validform_loading").addClass("Validform_checktip");//for ignore;
+
+                break;
+
+            default:
+
+                objtip.removeClass("Validform_right Validform_loading").addClass("Validform_checktip");//wrong;
+
+                break;
+
+          }
+
+          o.obj.qtip('destroy', true);
+
+          if(o.type == 3){
+
+            o.obj.qtip({
+
+              style: {
+
+                classes: 'qtip-red'
+
+              },
+
+              content: {
+
+                text: msg
+
+              },
+
+              position: {
+
+                my: 'left bottom',
+
+                at: 'top right',
+
+                adjust: {method : 'shift none'}
+
+              },
+
+              show: true,
+
+              hide: {
+
+                event: 'unfocus'
+
+              }
+
+            });
+
+          }
+
+        }	
+
+      },
+
+      showAllError: false,
+
+      beforeCheck: function(curform) {
+
+        //在表单提交执行验证之前执行的函数，curform参数是当前表单对象。
+
+        //这里明确return false的话将不会继续执行验证操作;  
+
+      },
+
+      beforeSubmit: function(curform) {
+
+        if (selectDbs.length == 0) {
+
+          alert("请选取至少1种数据库!");
+
+          $('.easycaptcha').attr('src', "/scascaptcha?t=" + new Date().getTime());
+
+          return false;
+
+        }
+
+        var targetList = new java.util.ArrayList();
+
+        var i = 0, len = selectDbs.length;
+
+        for(; i < len; i++) {
+
+          targetList.add(dbcache[selectDbs[i]]);
+
+        }
+
+
+
+        preRequestObj.searchTarget = targetList;
+
+        if (preRequestObj.consignorCheckNameStr !== '') {
+
+          var checkNameList = new java.util.ArrayList();
+
+          var checkNames = preRequestObj.consignorCheckNameStr.split(';');
+
+          $.each(checkNames, function(i, val) {
+
+            if ($.trim(val).length > 0) {
+
+              checkNameList.add($.trim(val));
+
+            }
+
+          });
+
+          preRequestObj.consignorCheckNameList = checkNameList;
+
+        }
+
+        //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+
+        //这里明确return false的话表单将不会提交;  
+
+        //alert(data);
+
+        var addResult = false;
+
+        try {
+
+          if (preRequestObj.samePeople) {
+
+            preRequestObj.contactName = preRequestObj.consignorName;
+
+          }
+
+          addResult = preRequestService.addPrePequest(preRequestObj);
+
+        } catch (e) {
+
+          $('.easycaptcha').attr('src', "/scascaptcha?t=" + new Date().getTime());
+
+          $.Showmsg("提交失败!" + e.message);
+
+          return false;
+
+        }
+
+
+
+        if (addResult) {
+
+          alert('您的预申请单已经成功提交，我们会在1-3个工作日内给您反馈，请耐心等待！');
+
+          window.location.href = "login.html";
+
+        }
+
+
+
+        return false;
+
+      },
+
+      callback: function(data) {
+
+        return false;
+
+      },
+
+      datatype: {
+
+        "captcha": function(gets, obj, curform, regxp) {
+
+          var captcha = $.trim($("#captcha").val());
+
+          return captchService.validate(captcha);
+
+        },
+
+        "phone" : function(gets, obj, curform, regxp) {
+
+          var regStr = /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$/;
+
+          if(regStr.test(gets)){return true;}
+
+		  return false;
+
+        }
+
+      }
+
+    });
+
+    
+
+    validform.unignore('#basic-info input[vname="in_school"]');
+
+    validform.ignore('#basic-info input[vname="out_school"]');
+
+    validform.unignore('#in_school .contactMail');
+
+    validform.ignore('#out_school .contactMail');
+
+    
+
+    if (calisCode === '522300') {
+
+    	 	//隐藏校内用户Tab页
+
+    	 	$('#basic-info .nav-tabs a[pvalue="1"]')[0].text="无本馆读者证用户";
+
+    	 	$('#basic-info .nav-tabs a[pvalue="1"]').trigger('click');
+
+    	 	$('#basic-info .nav-tabs a[pvalue="0"]').css('display','none');
+
+    	 	//修改校外用户为“无本馆读者证用户”
+
+    	 	
+
+    	 	//修改委托人为"被检索作者"
+
+    	 	$("#authorTip").html("被检索作者（文章作者）信息");
+
+    	 	$("#authorName").html("被检索作者姓名");
+
+    	 	$("#authorPinYin").html("被检索作者拼音");
+
+    	 	$("#isAuthor").html("委托人是被检索作者");
+
+    	 	//修改代办人为"委托人"
+
+    	 	$("#contactPerson").html("委托人信息");
+
+    	 	$("#contactName").html("委托人姓名");
+
+    }
+
+    
+
+     //深圳大学
+
+	$(".casJounalClass").hide();
+
+	if (calisCode == 510500 || calisCode == 242010 || calisCode == 237220 || calisCode == 242020) {
+
+		$(".casJounalClass").show();
+
+	}
+
+	
+
+	//北京大学
+
+	if (calisCode == 211010) {
+
+		//自引方式隐藏
+
+		$(".selfCiteComponent").hide();
+
+	}
+
+  };
+
+</script>
+
+</body>
+
+</html>
